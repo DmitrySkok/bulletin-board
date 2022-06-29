@@ -1,4 +1,16 @@
 @import '../../../styles/settings.scss';
 
-// .root {
-// }
+.form {
+  display: flex;
+  .title,
+  .article,
+  .status,
+  .submit {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .submit {
+    color: $light-color;
+    background: $dark-color;
+  }
+}

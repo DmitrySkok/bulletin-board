@@ -9,18 +9,18 @@ import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { getUser } from '../../../redux/userRedux';
 import { getAll } from '../../../redux/postsRedux';
-
-import styles from './Homepage.module.scss';
+import styles from './AllPosts.module.scss';
 import { Link } from 'react-router-dom';
 
 const Component = ({ className, user, posts }) => {
-  const postsByDate = posts.sort(function (a, b) {
+  let allPosts = posts.filter((post) => post.author === user.name);
+  const postsByDate = allPosts.sort(function (a, b) {
     return new Date(b.publicationDate) - new Date(a.publicationDate);
   });
-
   return (
     <div className={clsx(className, styles.root)}>
       <Container maxWidth='sm'>
+        <h2>Your Posts</h2>
         <div className={styles.list}>
           {postsByDate.map((post) => (
             <Card key={post.id} className={styles.card}>
@@ -47,8 +47,7 @@ const Component = ({ className, user, posts }) => {
             </Card>
           ))}
         </div>
-      </Container>
-      {user.logged ? (
+        {user.logged ? (
           <div className={styles.head}>
             <Button className={styles.button}>
               <Link className={styles.link} to='/post/add'>
@@ -59,6 +58,7 @@ const Component = ({ className, user, posts }) => {
         ) : (
           <div></div>
         )}
+      </Container>
     </div>
   );
 };
@@ -82,9 +82,9 @@ const mapDispatchToProps = (dispatch) => ({
   // someAction: arg => dispatch(reduxActionCreator(arg)),
 });
 
-const HomepageContainer = connect(
+const AllPostsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Component);
 
-export { HomepageContainer as Homepage, Component as HomepageComponent };
+export { AllPostsContainer as AllPosts, Component as AllPostsComponent };

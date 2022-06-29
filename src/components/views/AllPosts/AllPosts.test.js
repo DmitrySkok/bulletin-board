@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { HomepageComponent } from './Homepage';
+import { AllPostsComponent } from './AllPosts';
 
-describe('Component Homepage', () => {
+describe('Component AllPosts', () => {
   const testPosts = [
     {
       id: '1',
@@ -40,9 +40,10 @@ describe('Component Homepage', () => {
     logged: true,
     position: 'Admin',
   };
+
   it('should render without crashing', () => {
     const component = shallow(
-      <HomepageComponent posts={testPosts} user={testUser} />
+      <AllPostsComponent posts={testPosts} user={testUser} />
     );
     expect(component).toBeTruthy();
   });

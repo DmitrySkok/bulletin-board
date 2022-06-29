@@ -1,0 +1,30 @@
+@import '../../../styles/settings.scss';
+
+.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.brand {
+  text-decoration: none;
+  color: $light-color;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 6.5%;
+}
+
+.menu {
+  font-size: 20px;
+  a {
+    text-decoration: none;
+    color: $light-color;
+  }
+}
+
+.formControl {
+  width: 500px;
+  margin-bottom: 20px;
+}
