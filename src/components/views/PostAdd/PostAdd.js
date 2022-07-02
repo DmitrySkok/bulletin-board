@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
-import { addPost } from '../../../redux/postsRedux';
+import { fetchAdd } from '../../../redux/postsRedux';
 import { getUser } from '../../../redux/userRedux';
 import uniqid from 'uniqid';
 
@@ -19,10 +19,10 @@ class Component extends React.Component {
       id: '',
       title: '',
       author: this.props.user.name,
-      description: '',
+      text: '',
       status: '',
-      publicationDate: '',
-      actualizationDate: '',
+      created: '',
+      updated: '',
     },
   };
 
@@ -33,6 +33,7 @@ class Component extends React.Component {
       year: 'numeric',
       hour: 'numeric',
       minute: 'numeric',
+      second: 'numeric',
     };
     const today = new Date();
     const time = today.toLocaleDateString('en-US', options);
@@ -47,13 +48,12 @@ class Component extends React.Component {
       newPost: {
         ...newPost,
         [name]: value,
-        publicationDate: this.currentDate(),
-        actualizationDate: this.currentDate(),
+        created: this.currentDate(),
+        updated: this.currentDate(),
         id: uniqid(),
       },
     });
   };
-
 
   setNewPost = (e) => {
     const { addPost } = this.props;
@@ -89,7 +89,7 @@ class Component extends React.Component {
               <TextField
                 className={styles.article}
                 id='article-textfield'
-                name='description'
+                name='text'
                 label='Article'
                 multiline
                 rows={4}
@@ -137,7 +137,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addPost: (post) => dispatch(addPost(post)),
+  addPost: (post) => dispatch(fetchAdd(post)),
 });
 
 const PostAddContainer = connect(

@@ -8,63 +8,71 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import { connect } from 'react-redux';
 import { getUser } from '../../../redux/userRedux';
-import { getAll } from '../../../redux/postsRedux';
+import { fetchPublished, getAllPublished } from '../../../redux/postsRedux';
 import styles from './AllPosts.module.scss';
 import { Link } from 'react-router-dom';
 
-const Component = ({ className, user, posts }) => {
-  let allPosts = posts.filter((post) => post.author === user.name);
-  const postsByDate = allPosts.sort(function (a, b) {
-    return new Date(b.publicationDate) - new Date(a.publicationDate);
-  });
-  return (
-    <div className={clsx(className, styles.root)}>
-      <Container maxWidth='sm'>
-        <h2>Your Posts</h2>
-        <div className={styles.list}>
-          {postsByDate.map((post) => (
-            <Card key={post.id} className={styles.card}>
-              <CardContent className={styles.content}>
-                <Typography className={styles.author}>
-                  Author: {post.author}
-                </Typography>
-                <Typography
-                  className={styles.title}
-                  variant='h5'
-                  component='h2'
-                >
-                  {post.title}
-                </Typography>
-                <Typography className={styles.date}>
-                  Publication date: {post.publicationDate}
-                </Typography>
-                <Button className={styles.more} size='small'>
-                  <Link className={styles.link} to={`post/${post.id}`}>
-                    Learn More
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        {user.logged ? (
-          <div className={styles.head}>
-            <Button className={styles.button}>
-              <Link className={styles.link} to='/post/add'>
-                Add New Post
-              </Link>
-            </Button>
+class Component extends React.Component {
+  componentDidMount() {
+    const { fetchPublishedPosts } = this.props;
+    fetchPublishedPosts();
+  }
+  render() {
+    const { posts, className, user } = this.props;
+    let allPosts = posts.filter((post) => post.author === user.name);
+    const postsByDate = allPosts.sort(function (a, b) {
+      return new Date(b.publicationDate) - new Date(a.publicationDate);
+    });
+    return (
+      <div className={clsx(className, styles.root)}>
+        <Container maxWidth='sm'>
+          <h2>Your Posts</h2>
+          <div className={styles.list}>
+            {postsByDate.map((post) => (
+              <Card key={post.id} className={styles.card}>
+                <CardContent className={styles.content}>
+                  <Typography className={styles.author}>
+                    Author: {post.author}
+                  </Typography>
+                  <Typography
+                    className={styles.title}
+                    variant='h5'
+                    component='h2'
+                  >
+                    {post.title}
+                  </Typography>
+                  <Typography className={styles.date}>
+                    Publication date: {post.publicationDate}
+                  </Typography>
+                  <Button className={styles.more} size='small'>
+                    <Link className={styles.link} to={`post/${post.id}`}>
+                      Learn More
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        ) : (
-          <div></div>
-        )}
-      </Container>
-    </div>
-  );
-};
+          {user.logged ? (
+            <div className={styles.head}>
+              <Button className={styles.button}>
+                <Link className={styles.link} to='/post/add'>
+                  Add New Post
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </Container>
+      </div>
+    );
+  }
+}
 
 Component.propTypes = {
   className: PropTypes.string,
+  fetchPublishedPosts: PropTypes.node,
   user: PropTypes.shape({
     name: PropTypes.string,
     logged: PropTypes.bool,
@@ -75,11 +83,11 @@ Component.propTypes = {
 
 const mapStateToProps = (state) => ({
   user: getUser(state),
-  posts: getAll(state),
+  posts: getAllPublished(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  // someAction: arg => dispatch(reduxActionCreator(arg)),
+  fetchPublishedPosts: () => dispatch(fetchPublished()),
 });
 
 const AllPostsContainer = connect(

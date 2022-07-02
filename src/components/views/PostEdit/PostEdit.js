@@ -31,7 +31,6 @@ class Component extends React.Component {
     };
     const today = new Date();
     const time = today.toLocaleDateString('en-US', options);
-    console.log('time', time);
     return time;
   };
 
@@ -83,7 +82,7 @@ class Component extends React.Component {
                   value={editedPost.title}
                   multiline
                   maxRows={4}
-                  inputProps={{ minLength: 10, maxLength: 100 }}
+                  inputProps={{ minLength: 10 }}
                   onChange={this.updateField}
                 />
                 <TextField
@@ -94,7 +93,7 @@ class Component extends React.Component {
                   value={editedPost.description}
                   multiline
                   rows={4}
-                  inputProps={{ minLength: 25 }}
+                  inputProps={{ minLength: 20 }}
                   default
                   onChange={this.updateField}
                 />
